@@ -3,12 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Portfolio</title>
+    <style>
+        @font-face {
+            font-family: 'Proxima Nova';
+            src: url('content/fonts/Proxima-Nova-Bold.ttf') format('truetype');
+        }
+        
+        body {
+            background-color: #1F1F1F;
+            margin: 0;
+            padding: 0;
+            font-family: 'Proxima Nova', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-image: url('content/images/S.png');
+            background-size: cover;
+            background-position: center;
+            margin: 0 auto 20px;
+        }
+
+        .name {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .username {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s;
+        }
+
+        .bio {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: justify;
+        }
+
+        .dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My GitHub Page</h1>
-    <a href="hello.html">
-        <img src="path/to/your/image.jpg" alt="Click me!" style="width:300px;height:300px;">
-    </a>
+    <div class="container">
+        <div class="profile-pic"></div>
+        <div class="name">Your Name</div>
+        <div class="username">@YourUsername</div>
+        <div class="social-links">
+            <a href="https://youtube.com/@sivsome" target="_blank">YT</a>
+            <a href="https://x.com/@sivsome" target="_blank">X</a>
+            <a href="https://www.roblox.com/users/3353235702/profile" target="_blank">RB</a>
+            <a href="https://discord.gg/YVVyZ5RvQY" target="_blank">DC</a>
+            <a href="https://www.gamergamestudios.xyz" target="_blank">Custom</a>
+        </div>
+        <div class="bio">
+            Your bio or about me section goes here. Write something about yourself, your work, or anything you'd like visitors to know.
+        </div>
+    </div>
+    <script>
+        const dots = [];
+        const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+        function createDot() {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            document.body.appendChild(dot);
+            dots.push({ element: dot, x: mouse.x, y: mouse.y });
+        }
+
+        function updateDots() {
+            dots.forEach(dot => {
+                dot.x += (mouse.x - dot.x) * 0.05;
+                dot.y += (mouse.y - dot.y) * 0.05;
+                dot.element.style.left = `${dot.x}px`;
+                dot.element.style.top = `${dot.y}px`;
+            });
+        }
+
+        function animate() {
+            updateDots();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        for (let i = 0; i < 100; i++) {
+            createDot();
+        }
+
+        animate();
+    </script>
 </body>
 </html>
