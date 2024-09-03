@@ -3,231 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>Your Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
+        /* Font Import */
         @font-face {
             font-family: 'Proxima Nova';
             src: url('content/fonts/Proxima-Nova-Bold.ttf') format('truetype');
         }
 
         body {
-            background-color: #1F1F1F;
             margin: 0;
             padding: 0;
+            background-color: #1F1F1F;
             font-family: 'Proxima Nova', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             overflow: hidden;
-            opacity: 0;
-            transition: opacity 2s ease-in;
         }
 
-        .container {
+        /* Centered Profile Picture and Name */
+        .center-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
             color: white;
-            position: relative;
-            opacity: 0;
-            transition: opacity 2s ease-in;
-            max-width: 80%;
-            margin: 0 auto;
         }
 
         .profile-pic {
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            background-image: url('content/images/S.png');
-            background-size: cover;
-            background-position: center;
-            margin: 0 auto 20px;
-            transition: transform 0.5s ease-in-out, box-shadow 0.3s, perspective 1px;
-            transform-style: preserve-3d;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
         .profile-pic:hover {
-            transform: scale(1.1) rotateX(10deg) rotateY(10deg);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            transform: scale(1.1) rotate3d(1, 1, 1, 20deg);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .name {
-            font-size: 36px;
-            margin-bottom: 10px;
-            transition: transform 0.3s, text-shadow 0.3s;
+        h1, h2, p, .social-links img {
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-        .name:hover {
-            transform: scale(1.05);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        h1, h2 {
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
         }
 
-        .username {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #888;
-            transition: transform 0.3s, text-shadow 0.3s;
-        }
-
-        .username:hover {
-            transform: scale(1.05);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        h1:hover, h2:hover {
+            transform: scale(1.1);
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
         }
 
         .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            margin-top: 20px;
         }
 
-        .social-links a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            padding: 10px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .social-links img {
             width: 40px;
             height: 40px;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 0 10px;
+            transition: transform 0.3s ease;
         }
 
-        .social-links a:hover {
+        .social-links img:hover {
             transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
         }
 
-        .social-links a.yt { background-image: url('content/images/youtube.png'); }
-        .social-links a.x { background-image: url('content/images/x.png'); }
-        .social-links a.rb { background-image: url('content/images/roblox.png'); }
-        .social-links a.dc { background-image: url('content/images/discord.png'); }
-        .social-links a.custom { background-image: url('content/images/custom.png'); }
-
-        .bio {
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            transition: color 0.3s;
+        .about {
+            margin-top: 20px;
+            font-size: 16px;
         }
 
-        .bio:hover {
-            color: #888;
-        }
-
-        canvas {
+        /* Background Dots */
+        .background {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: url('file-JHnRdw17cEbMxyWyq6oDDXOf') no-repeat center center;
+            background-size: cover;
+            opacity: 0.2;
             z-index: -1;
         }
+
+        /* Smooth Gliding of Assets */
+        @keyframes glide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(var(--mouseX), var(--mouseY)); }
+        }
+
+        .smooth-move {
+            transition: transform 0.5s ease-in-out;
+            animation: glide 1.5s infinite ease-in-out;
+        }
+
+        /* Prevent Embedding */
+        Header set X-Frame-Options "DENY"
+        Header set Content-Security-Policy "frame-ancestors 'none';"
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="profile-pic"></div>
-        <div class="name">Your Name</div>
-        <div class="username">@YourUsername</div>
-        <div class="social-links">
-            <a href="https://youtube.com/@sivsome" target="_blank" class="yt"></a>
-            <a href="https://x.com/@sivsome" target="_blank" class="x"></a>
-            <a href="https://www.roblox.com/users/3353235702/profile" target="_blank" class="rb"></a>
-            <a href="https://discord.gg/YVVyZ5RvQY" target="_blank" class="dc"></a>
-            <a href="https://www.gamergamestudios.xyz" target="_blank" class="custom"></a>
-        </div>
-        <div class="bio">
-            Your bio or about me section goes here. Write something about yourself, your work, or anything you'd like visitors to know.
-        </div>
+
+<div class="center-container">
+    <img src="content/images/S.png" alt="Profile Picture" class="profile-pic smooth-move">
+    <h1 class="smooth-move">Your Name</h1>
+    <h2 class="smooth-move">@YourUsername</h2>
+    
+    <div class="social-links">
+        <a href="https://youtube.com/@sivsome"><img src="content/images/youtube.png" alt="YouTube"></a>
+        <a href="https://www.roblox.com/users/3353235702/profile"><img src="content/images/roblox.png" alt="Roblox"></a>
+        <a href="https://www.gamergamestudios.xyz"><img src="content/images/custom.png" alt="Custom"></a>
     </div>
-    <canvas id="canvas"></canvas>
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
+    
+    <p class="about smooth-move">Your bio or about me section goes here. Write something about yourself, your work, or anything you'd like visitors to know.</p>
+</div>
 
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
+<div class="background"></div>
 
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+<script>
+    document.addEventListener('mousemove', function(e) {
+        let elements = document.querySelectorAll('.smooth-move');
+        let mouseX = e.clientX - window.innerWidth / 2;
+        let mouseY = e.clientY - window.innerHeight / 2;
 
-        const dots = [];
-        const maxDots = 150;
-        const connectionDistance = 100;
-
-        class Dot {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
-                this.radius = Math.random() * 2 + 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                ctx.fill();
-                ctx.closePath();
-            }
-
-            connect(dots) {
-                dots.forEach(dot => {
-                    const dx = this.x - dot.x;
-                    const dy = this.y - dot.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < connectionDistance) {
-                        ctx.beginPath();
-                        ctx.moveTo(this.x, this.y);
-                        ctx.lineTo(dot.x, dot.y);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / connectionDistance})`;
-                        ctx.stroke();
-                        ctx.closePath();
-                    }
-                });
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-
-            if (dots.length < maxDots) {
-                dots.push(new Dot());
-            }
-
-            dots.forEach((dot, index) => {
-                dot.update();
-                dot.draw();
-                dot.connect(dots.slice(index));
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('load', () => {
-            document.body.style.opacity = 1;
-            document.querySelector('.container').style.opacity = 1;
-            animate();
+        elements.forEach(function(el) {
+            let speed = parseFloat(el.dataset.speed) || 0.1;
+            el.style.setProperty('--mouseX', `${mouseX * speed}px`);
+            el.style.setProperty('--mouseY', `${mouseY * speed}px`);
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
