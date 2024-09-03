@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Portfolio</title>
+    <title>sivsome's Portfolio</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Font Import */
@@ -18,35 +18,43 @@
             background-color: #1F1F1F;
             font-family: 'Proxima Nova', sans-serif;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         /* Centered Profile Picture and Name */
         .center-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             text-align: center;
             color: white;
-        }
-
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            transform: scale(1.2); /* Increased embed size */
             transition: transform 0.4s ease;
         }
 
+        .center-container:hover {
+            transform: scale(1.25);
+        }
+
+        .profile-pic {
+            width: 195px; /* Increased image size */
+            height: 195px;
+            border-radius: 50%;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
         .profile-pic:hover {
-            transform: scale(1.1) rotate3d(1, 1, 1, 20deg);
+            transform: scale(1.3) rotate3d(1, 1, 1, 20deg); /* Enhanced hover effect */
         }
 
         h1, h2 {
-            transition: transform 0.3s ease;
+            margin: 10px 0;
+            transition: transform 0.4s ease-in-out, color 0.3s ease;
         }
 
         h1:hover, h2:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            color: #FFD700; /* Gold color on hover */
         }
 
         .social-links {
@@ -57,16 +65,25 @@
             width: 40px;
             height: 40px;
             margin: 0 10px;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease, filter 0.3s ease;
+            filter: brightness(0.8);
         }
 
         .social-links img:hover {
-            transform: scale(1.2);
+            transform: scale(1.3);
+            filter: brightness(1);
         }
 
         .about {
             margin-top: 20px;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: transform 0.4s ease, color 0.3s ease;
+        }
+
+        .about:hover {
+            transform: scale(1.1);
+            color: #FFD700; /* Gold color on hover */
         }
 
         /* Background Dots */
@@ -86,14 +103,34 @@
             top: 0;
             left: 0;
         }
+
+        /* Projects Button */
+        .projects-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .projects-button:hover {
+            background-color: #555;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
 <body>
 
 <div class="center-container">
     <img src="content/images/S.png" alt="Profile Picture" class="profile-pic">
-    <h1>Your Name</h1>
-    <h2>@YourUsername</h2>
+    <h1>sivsome</h1>
+    <h2>@sivsome</h2>
     
     <div class="social-links">
         <a href="https://youtube.com/@sivsome"><img src="content/images/youtube.png" alt="YouTube"></a>
@@ -101,7 +138,9 @@
         <a href="https://www.gamergamestudios.xyz"><img src="content/images/custom.png" alt="Custom"></a>
     </div>
     
-    <p class="about">Your bio or about me section goes here. Write something about yourself, your work, or anything you'd like visitors to know.</p>
+    <p class="about">hello</p>
+
+    <a href="/projects" class="projects-button">Projects</a>
 </div>
 
 <div class="background">
