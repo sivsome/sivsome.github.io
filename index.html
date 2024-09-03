@@ -20,12 +20,16 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            opacity: 0;
+            transition: opacity 2s ease-in;
         }
 
         .container {
             text-align: center;
             color: white;
             position: relative;
+            opacity: 0;
+            transition: opacity 2s ease-in;
         }
 
         .profile-pic {
@@ -80,11 +84,11 @@
 
         .dot {
             position: absolute;
-            width: 10px;
-            height: 10px;
             border-radius: 50%;
             background-color: white;
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 2s ease-in;
         }
     </style>
 </head>
@@ -111,14 +115,34 @@
         function createDot() {
             const dot = document.createElement('div');
             dot.classList.add('dot');
+            const size = Math.random() * 6 + 5; // Size between 5px and 11px
+            dot.style.width = `${size}px`;
+            dot.style.height = `${size}px`;
+            dot.style.opacity = Math.random() * 0.45; // Opacity between 0 and 0.45
             document.body.appendChild(dot);
-            dots.push({ element: dot, x: mouse.x, y: mouse.y });
+            dots.push({
+                element: dot,
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                speedX: (Math.random() - 0.5) * 4,
+                speedY: (Math.random() - 0.5) * 4
+            });
         }
 
         function updateDots() {
             dots.forEach(dot => {
-                dot.x += (mouse.x - dot.x) * 0.05;
-                dot.y += (mouse.y - dot.y) * 0.05;
+                const angle = Math.atan2(mouse.y - dot.y, mouse.x - dot.x);
+                dot.speedX += Math.cos(angle) * 0.1;
+                dot.speedY += Math.sin(angle) * 0.1;
+                dot.x += dot.speedX;
+                dot.y += dot.speedY;
+
+                // Wrap around edges
+                if (dot.x < 0) dot.x = window.innerWidth;
+                if (dot.x > window.innerWidth) dot.x = 0;
+                if (dot.y < 0) dot.y = window.innerHeight;
+                if (dot.y > window.innerHeight) dot.y = 0;
+
                 dot.element.style.left = `${dot.x}px`;
                 dot.element.style.top = `${dot.y}px`;
             });
@@ -138,7 +162,14 @@
             createDot();
         }
 
-        animate();
+        window.addEventListener('load', () => {
+            document.body.style.opacity = 1;
+            document.querySelector('.container').style.opacity = 1;
+            dots.forEach(dot => {
+                dot.element.style.opacity = dot.element.style.opacity || 0.45;
+            });
+            animate();
+        });
     </script>
 </body>
 </html>
