@@ -40,17 +40,33 @@
             background-size: cover;
             background-position: center;
             margin: 0 auto 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
         }
 
         .name {
             font-size: 36px;
             margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .name:hover {
+            color: #888;
         }
 
         .username {
             font-size: 24px;
             margin-bottom: 20px;
             color: #888;
+            transition: color 0.3s;
+        }
+
+        .username:hover {
+            color: white;
         }
 
         .social-links {
@@ -72,7 +88,13 @@
             justify-content: center;
             width: 50px;
             height: 50px;
-            transition: transform 0.3s;
+            transition: transform 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+            background-color: white;
+            color: #1F1F1F;
         }
 
         .bio {
@@ -80,6 +102,11 @@
             max-width: 600px;
             margin: 0 auto;
             text-align: justify;
+            transition: color 0.3s;
+        }
+
+        .bio:hover {
+            color: #888;
         }
 
         .dot {
@@ -124,18 +151,16 @@
                 element: dot,
                 x: Math.random() * window.innerWidth,
                 y: Math.random() * window.innerHeight,
-                speedX: (Math.random() - 0.5) * 4,
-                speedY: (Math.random() - 0.5) * 4
+                speed: Math.random() * 1 + 0.5 // Speed between 0.5 and 1.5
             });
         }
 
         function updateDots() {
             dots.forEach(dot => {
                 const angle = Math.atan2(mouse.y - dot.y, mouse.x - dot.x);
-                dot.speedX += Math.cos(angle) * 0.1;
-                dot.speedY += Math.sin(angle) * 0.1;
-                dot.x += dot.speedX;
-                dot.y += dot.speedY;
+                const speed = dot.speed;
+                dot.x += Math.cos(angle) * speed;
+                dot.y += Math.sin(angle) * speed;
 
                 // Wrap around edges
                 if (dot.x < 0) dot.x = window.innerWidth;
