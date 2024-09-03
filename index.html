@@ -34,26 +34,19 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transition: transform 0.4s ease;
         }
 
         .profile-pic:hover {
             transform: scale(1.1) rotate3d(1, 1, 1, 20deg);
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        h1, h2, p, .social-links img {
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         h1, h2 {
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         h1:hover, h2:hover {
             transform: scale(1.1);
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
         }
 
         .social-links {
@@ -83,34 +76,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('file-JHnRdw17cEbMxyWyq6oDDXOf') no-repeat center center;
-            background-size: cover;
-            opacity: 0.2;
+            background-color: #1F1F1F;
             z-index: -1;
         }
 
-        /* Smooth Gliding of Assets */
-        @keyframes glide {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(var(--mouseX), var(--mouseY)); }
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-
-        .smooth-move {
-            transition: transform 0.5s ease-in-out;
-            animation: glide 1.5s infinite ease-in-out;
-        }
-
-        /* Prevent Embedding */
-        Header set X-Frame-Options "DENY"
-        Header set Content-Security-Policy "frame-ancestors 'none';"
     </style>
 </head>
 <body>
 
 <div class="center-container">
-    <img src="content/images/S.png" alt="Profile Picture" class="profile-pic smooth-move">
-    <h1 class="smooth-move">Your Name</h1>
-    <h2 class="smooth-move">@YourUsername</h2>
+    <img src="content/images/S.png" alt="Profile Picture" class="profile-pic">
+    <h1>Your Name</h1>
+    <h2>@YourUsername</h2>
     
     <div class="social-links">
         <a href="https://youtube.com/@sivsome"><img src="content/images/youtube.png" alt="YouTube"></a>
@@ -118,23 +101,83 @@
         <a href="https://www.gamergamestudios.xyz"><img src="content/images/custom.png" alt="Custom"></a>
     </div>
     
-    <p class="about smooth-move">Your bio or about me section goes here. Write something about yourself, your work, or anything you'd like visitors to know.</p>
+    <p class="about">Your bio or about me section goes here. Write something about yourself, your work, or anything you'd like visitors to know.</p>
 </div>
 
-<div class="background"></div>
+<div class="background">
+    <canvas></canvas>
+</div>
 
 <script>
-    document.addEventListener('mousemove', function(e) {
-        let elements = document.querySelectorAll('.smooth-move');
-        let mouseX = e.clientX - window.innerWidth / 2;
-        let mouseY = e.clientY - window.innerHeight / 2;
+    // Grid of Dots Moving
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
 
-        elements.forEach(function(el) {
-            let speed = parseFloat(el.dataset.speed) || 0.1;
-            el.style.setProperty('--mouseX', `${mouseX * speed}px`);
-            el.style.setProperty('--mouseY', `${mouseY * speed}px`);
+    let width, height, dots;
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        dots = createDots();
+    }
+
+    function createDots() {
+        const numberOfDots = Math.floor(width * height / 9000);
+        const dotArray = [];
+
+        for (let i = 0; i < numberOfDots; i++) {
+            dotArray.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        return dotArray;
+    }
+
+    function animateDots() {
+        ctx.clearRect(0, 0, width, height);
+        
+        dots.forEach(dot => {
+            dot.x += dot.vx;
+            dot.y += dot.vy;
+
+            if (dot.x < 0 || dot.x > width) dot.vx = -dot.vx;
+            if (dot.y < 0 || dot.y > height) dot.vy = -dot.vy;
+
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.fill();
         });
-    });
+
+        connectDots();
+        requestAnimationFrame(animateDots);
+    }
+
+    function connectDots() {
+        for (let i = 0; i < dots.length; i++) {
+            for (let j = i + 1; j < dots.length; j++) {
+                const distance = Math.hypot(dots[i].x - dots[j].x, dots[i].y - dots[j].y);
+                if (distance < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(dots[i].x, dots[i].y);
+                    ctx.lineTo(dots[j].x, dots[j].y);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 100})`;
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    animateDots();
 </script>
 
 </body>
