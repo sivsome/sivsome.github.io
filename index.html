@@ -40,33 +40,35 @@
             background-size: cover;
             background-position: center;
             margin: 0 auto 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s, perspective 1px;
         }
 
         .profile-pic:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotateX(10deg) rotateY(10deg);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
         }
 
         .name {
             font-size: 36px;
             margin-bottom: 10px;
-            transition: color 0.3s;
+            transition: transform 0.3s, text-shadow 0.3s;
         }
 
         .name:hover {
-            color: #888;
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
         }
 
         .username {
             font-size: 24px;
             margin-bottom: 20px;
             color: #888;
-            transition: color 0.3s;
+            transition: transform 0.3s, text-shadow 0.3s;
         }
 
         .username:hover {
-            color: white;
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
         }
 
         .social-links {
@@ -81,21 +83,27 @@
             color: white;
             font-size: 18px;
             padding: 10px;
-            border: 2px solid white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 50px;
             height: 50px;
-            transition: transform 0.3s, background-color 0.3s, color 0.3s;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .social-links a:hover {
             transform: scale(1.2);
-            background-color: white;
-            color: #1F1F1F;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
         }
+
+        .social-links a.yt { background-image: url('content/images/youtube.png'); }
+        .social-links a.x { background-image: url('content/images/x.png'); }
+        .social-links a.rb { background-image: url('content/images/roblox.png'); }
+        .social-links a.dc { background-image: url('content/images/discord.png'); }
+        .social-links a.custom { background-image: url('content/images/custom.png'); }
 
         .bio {
             font-size: 18px;
@@ -125,11 +133,11 @@
         <div class="name">Your Name</div>
         <div class="username">@YourUsername</div>
         <div class="social-links">
-            <a href="https://youtube.com/@sivsome" target="_blank">YT</a>
-            <a href="https://x.com/@sivsome" target="_blank">X</a>
-            <a href="https://www.roblox.com/users/3353235702/profile" target="_blank">RB</a>
-            <a href="https://discord.gg/YVVyZ5RvQY" target="_blank">DC</a>
-            <a href="https://www.gamergamestudios.xyz" target="_blank">Custom</a>
+            <a href="https://youtube.com/@sivsome" target="_blank" class="yt"></a>
+            <a href="https://x.com/@sivsome" target="_blank" class="x"></a>
+            <a href="https://www.roblox.com/users/3353235702/profile" target="_blank" class="rb"></a>
+            <a href="https://discord.gg/YVVyZ5RvQY" target="_blank" class="dc"></a>
+            <a href="https://www.gamergamestudios.xyz" target="_blank" class="custom"></a>
         </div>
         <div class="bio">
             Your bio or about me section goes here. Write something about yourself, your work, or anything you'd like visitors to know.
@@ -138,6 +146,7 @@
     <script>
         const dots = [];
         const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        const maxDots = 200;
 
         function createDot() {
             const dot = document.createElement('div');
@@ -151,8 +160,12 @@
                 element: dot,
                 x: Math.random() * window.innerWidth,
                 y: Math.random() * window.innerHeight,
-                speed: Math.random() * 1 + 0.5 // Speed between 0.5 and 1.5
+                speed: Math.random() * 0.5 + 0.2 // Speed between 0.2 and 0.7
             });
+            if (dots.length > maxDots) {
+                const oldDot = dots.shift();
+                document.body.removeChild(oldDot.element);
+            }
         }
 
         function updateDots() {
@@ -183,7 +196,7 @@
             mouse.y = e.clientY;
         });
 
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < maxDots; i++) {
             createDot();
         }
 
@@ -194,6 +207,26 @@
                 dot.element.style.opacity = dot.element.style.opacity || 0.45;
             });
             animate();
+        });
+
+        // Audio logic
+        let audioStarted = false;
+        window.addEventListener('click', () => {
+            if (!audioStarted) {
+                const audio = new Audio('content/images/song.mp3');
+                audio.volume = 0;
+                audio.play();
+                let volume = 0;
+                const fadeAudio = setInterval(() => {
+                    if (volume < 0.25) {
+                        volume += 0.01;
+                        audio.volume = volume;
+                    } else {
+                        clearInterval(fadeAudio);
+                    }
+                }, 100);
+                audioStarted = true;
+            }
         });
     </script>
 </body>
