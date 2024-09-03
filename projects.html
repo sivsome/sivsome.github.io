@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Work - sivsome</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1F1F1F;
+            font-family: 'Proxima Nova', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .content-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .work-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            transition: transform 0.4s ease;
+        }
+
+        .work-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .work-item img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .work-item img:hover {
+            transform: scale(1.05);
+        }
+
+        .work-item .text {
+            flex: 1;
+            padding: 20px;
+            font-size: 18px;
+            color: #CCCCCC;
+        }
+
+        .work-item h3 {
+            margin-top: 0;
+            color: #FFD700;
+            transition: color 0.4s ease;
+        }
+
+        .work-item:hover h3 {
+            color: #FFA500;
+        }
+
+        /* Fullscreen Image */
+        .fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .fullscreen-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Background Dots */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1F1F1F;
+            z-index: -1;
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="content-container">
+    <div class="work-item">
+        <img src="images/work1.png" alt="Work 1" class="clickable-image">
+        <div class="text">
+            <h3>Project Title 1</h3>
+            <p>This is a description for project 1. You can describe what this project is about, what technologies were used, and any other relevant information.</p>
+        </div>
+    </div>
+    
+    <div class="work-item">
+        <img src="images/work2.png" alt="Work 2" class="clickable-image">
+        <div class="text">
+            <h3>Project Title 2</h3>
+            <p>This is a description for project 2. You can describe what this project is about, what technologies were used, and any other relevant information.</p>
+        </div>
+    </div>
+    
+    <div class="work-item">
+        <img src="images/work3.png" alt="Work 3" class="clickable-image">
+        <div class="text">
+            <h3>Project Title 3</h3>
+            <p>This is a description for project 3. You can describe what this project is about, what technologies were used, and any other relevant information.</p>
+        </div>
+    </div>
+</div>
+
+<div class="fullscreen-overlay">
+    <img src="" alt="Fullscreen Image">
+</div>
+
+<div class="background">
+    <canvas></canvas>
+</div>
+
+<script>
+    // Fullscreen image functionality
+    const images = document.querySelectorAll('.clickable-image');
+    const overlay = document.querySelector('.fullscreen-overlay');
+    const overlayImage = overlay.querySelector('img');
+
+    images.forEach(image => {
+        image.addEventListener('click', () => {
+            overlayImage.src = image.src;
+            overlay.style.display = 'flex';
+        });
+    });
+
+    overlay.addEventListener('click', () => {
+        overlay.style.display = 'none';
+    });
+
+    // Grid of Dots Moving
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height, dots;
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        dots = createDots();
+    }
+
+    function createDots() {
+        const numberOfDots = Math.floor(width * height / 9000);
+        const dotArray = [];
+
+        for (let i = 0; i < numberOfDots; i++) {
+            dotArray.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        return dotArray;
+    }
+
+    function animateDots() {
+        ctx.clearRect(0, 0, width, height);
+        
+        dots.forEach(dot => {
+            dot.x += dot.vx;
+            dot.y += dot.vy;
+
+            if (dot.x < 0 || dot.x > width) dot.vx = -dot.vx;
+            if (dot.y < 0 || dot.y > height) dot.vy = -dot.vy;
+
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.fill();
+        });
+
+        connectDots();
+        requestAnimationFrame(animateDots);
+    }
+
+    function connectDots() {
+        for (let i = 0; i < dots.length; i++) {
+            for (let j = i + 1; j < dots.length; j++) {
+                const distance = Math.hypot(dots[i].x - dots[j].x, dots[i].y - dots[j].y);
+                if (distance < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(dots[i].x, dots[i].y);
+                    ctx.lineTo(dots[j].x, dots[j].y);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 100})`;
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    animateDots();
+</script>
+
+</body>
+</html>
