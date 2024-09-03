@@ -30,6 +30,8 @@
             position: relative;
             opacity: 0;
             transition: opacity 2s ease-in;
+            max-width: 80%;
+            margin: 0 auto;
         }
 
         .profile-pic {
@@ -40,7 +42,7 @@
             background-size: cover;
             background-position: center;
             margin: 0 auto 20px;
-            transition: transform 0.3s, box-shadow 0.3s, perspective 1px;
+            transition: transform 0.5s ease-in-out, box-shadow 0.3s, perspective 1px;
             transform-style: preserve-3d;
         }
 
@@ -88,8 +90,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background-size: cover;
             background-position: center;
             transition: transform 0.3s, box-shadow 0.3s;
@@ -110,7 +112,7 @@
             font-size: 18px;
             max-width: 600px;
             margin: 0 auto;
-            text-align: justify;
+            text-align: center;
             transition: color 0.3s;
         }
 
@@ -225,26 +227,6 @@
             document.body.style.opacity = 1;
             document.querySelector('.container').style.opacity = 1;
             animate();
-        });
-
-        // Audio logic
-        let audioStarted = false;
-        window.addEventListener('click', () => {
-            if (!audioStarted) {
-                const audio = new Audio('content/Food RNG - Soundtrack.WAV');
-                audio.volume = 0;
-                audio.play();
-                let volume = 0;
-                const fadeAudio = setInterval(() => {
-                    if (volume < 0.25) {
-                        volume += 0.01;
-                        audio.volume = volume;
-                    } else {
-                        clearInterval(fadeAudio);
-                    }
-                }, 100);
-                audioStarted = true;
-            }
         });
     </script>
 </body>
