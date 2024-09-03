@@ -30,6 +30,8 @@
             color: white;
             transform: scale(1.2); /* Increased embed size */
             transition: transform 0.4s ease;
+            position: relative;
+            top: -10px; /* Move the container up slightly */
         }
 
         .center-container:hover {
@@ -37,8 +39,8 @@
         }
 
         .profile-pic {
-            width: 195px; /* Increased image size */
-            height: 195px;
+            width: 117px; /* 60% of the original 195px */
+            height: 117px;
             border-radius: 50%;
             transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
@@ -50,6 +52,10 @@
         h1, h2 {
             margin: 10px 0;
             transition: transform 0.4s ease-in-out, color 0.3s ease;
+        }
+
+        h2 {
+            color: #CCCCCC; /* Darker shade of gray for @sivsome */
         }
 
         h1:hover, h2:hover {
